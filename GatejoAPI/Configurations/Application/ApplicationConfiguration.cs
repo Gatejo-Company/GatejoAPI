@@ -23,7 +23,7 @@ public static class ApplicationConfiguration {
         });
 
         app.UseHttpsRedirection();
-        app.UseHsts();
+        //app.UseHsts();
 
         app.UseResponseCompression();
         app.UseRateLimiter();
