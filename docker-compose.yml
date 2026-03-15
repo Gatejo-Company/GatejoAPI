@@ -1,0 +1,13 @@
+services:
+  gatejoapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gatejo-api
+    ports:
+      - "1406:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Release
+    volumes:
+      - ./GatejoAPI/appsettings.Release.json:/app/appsettings.Release.json:ro
+    restart: unless-stopped
