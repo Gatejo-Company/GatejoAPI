@@ -8,6 +8,10 @@ services:
       - "1406:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Release
-    volumes:
-      - ./GatejoAPI/appsettings.Release.json:/app/appsettings.Release.json:ro
+      - ConnectionStrings__value=
+      - Auth__Secret=
+      - Auth__ValidAudience=
+      - Auth__ValidIssuer=
+      - Auth__AccessTokenExpirationMinutes=
+      - Auth__RefreshTokenExpirationDays=
     restart: unless-stopped
