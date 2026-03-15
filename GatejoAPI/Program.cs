@@ -5,4 +5,4 @@ WebApplication.CreateBuilder(args)
               .Configure()
               .Build()
               .Configure()
-              .Run();
+              .Ru();
