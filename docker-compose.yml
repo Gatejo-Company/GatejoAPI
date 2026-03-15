@@ -7,5 +7,7 @@ services:
     ports:
       - "0:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Release
+    volumes:
+      - ./appsettings.Release.json:/app/appsettings.Release.json:ro
     restart: unless-stopped
