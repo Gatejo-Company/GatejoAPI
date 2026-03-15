@@ -9,5 +9,5 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Release
     volumes:
-      - ./appsettings.Release.json:/app/appsettings.Release.json:ro
+      - ./GatejoAPI/appsettings.Release.json:/app/appsettings.Release.json:ro
     restart: unless-stopped
