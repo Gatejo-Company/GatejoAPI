@@ -15,7 +15,7 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_ENVIRONMENT=Release
 
 EXPOSE 8080
 
