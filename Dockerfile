@@ -27,9 +27,8 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-ENV ASPNETCORE_URLS=http://+:1406
 ENV ASPNETCORE_ENVIRONMENT=Production
 
-EXPOSE 1406
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "API.GatejoAPI.dll"]

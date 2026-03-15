@@ -5,8 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: gatejo-api
     ports:
-      - "1406:1406"
+      - "0:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:1406
     restart: unless-stopped
