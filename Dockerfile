@@ -2,21 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Copy solution and project files
-COPY GatejoAPI.sln ./
-COPY global.json ./
-COPY GatejoAPI/GatejoAPI.csproj GatejoAPI/
-COPY Application/Application.csproj Application/
-COPY Domain/Domain.csproj Domain/
-COPY DataAccess/DataAccess.csproj DataAccess/
-COPY Persistence/Persistence.csproj Persistence/
-COPY Utils/Utils.csproj Utils/
-
-# Restore dependencies
-RUN dotnet restore GatejoAPI.sln
-
-# Copy source code
+# Copy everything and restore
 COPY . .
+RUN dotnet restore GatejoAPI.sln
 
 # Publish in Release mode
 RUN dotnet publish GatejoAPI/GatejoAPI.csproj -c Release -o /app/publish --no-restore
