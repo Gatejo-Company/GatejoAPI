@@ -1,0 +1,12 @@
+services:
+  gatejoapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gatejo-api
+    ports:
+      - "1406:1406"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:1406
+    restart: unless-stopped
