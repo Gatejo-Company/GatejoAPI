@@ -20,7 +20,7 @@ jobs:
           dotnet-version: "10.0.x"
 
       - name: Restore dependencies
-        run: dotnet restore GatejoAPI/GatejoAPI.sln
+        run: dotnet restore GatejoAPI.sln
 
       - name: Build solution
-        run: dotnet build GatejoAPI/GatejoAPI.sln --no-restore --configuration Release
+        run: dotnet build GatejoAPI.sln --no-restore --configuration Release
