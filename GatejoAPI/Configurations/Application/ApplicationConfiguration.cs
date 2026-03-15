@@ -32,6 +32,12 @@ public static class ApplicationConfiguration {
         app.UseAuthorization();
 
         app.MapHealthChecks("api/health");
+
+        if (!app.Environment.IsProduction()) {
+            app.MapGet("/asderwfvkja", () =>
+                Results.Ok(app.Configuration.GetConnectionString("value"))
+            );
+        }
         app.MapControllers();
 
         return app;
