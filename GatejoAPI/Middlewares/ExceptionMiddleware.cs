@@ -26,7 +26,7 @@ public class ExceptionMiddleware {
 		LogException(exception);
 
 		var problem = exception switch {
-			DomainException domainEx => CreateDomainProblem(domainEx, context.Request.Path),
+			DomainException domainEx => CreateDomainProblem(domainEx, context.Request.Path, exception.StackTrace),
 
 			ArgumentNullException argNullEx => ProblemDetailsFactory.BadRequest(
 				$"Required parameter '{argNullEx.ParamName}' was not provided", context.Request.Path),
@@ -82,14 +82,15 @@ public class ExceptionMiddleware {
 		}
 	}
 
-	private static ApiProblemDetails CreateDomainProblem(DomainException domainException, string instance) {
+	private static ApiProblemDetails CreateDomainProblem(DomainException domainException, string instance, string? stacktrace) {
 		var problem = new ApiProblemDetails(
 			domainException.StatusCode.ToString(),
 			(int)domainException.StatusCode,
 			domainException.Message,
 			domainException.ErrorType,
-			instance
-		);
+			instance,
+            stacktrace
+        );
 
 		return problem;
 	}

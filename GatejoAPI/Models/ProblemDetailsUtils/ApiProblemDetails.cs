@@ -5,19 +5,21 @@ namespace API.API_Clean_Architecture.Models.ProblemDetailsUtils;
 
 public class ApiProblemDetails : ProblemDetails {
     private readonly Dictionary<string, object?> _extensions;
+    public string? StackTrace { get; set; }
 
     public ApiProblemDetails() {
         _extensions = new Dictionary<string, object?>();
     }
 
     public ApiProblemDetails(string title, int status, string? detail = null, string? type = null,
-        string? instance = null)
+        string? instance = null, string? stacktrace = null)
         : this() {
         Title = title;
         Status = status;
         Detail = detail;
         Type = type;
         Instance = instance;
+        StackTrace = stacktrace;
     }
 
     ///// <summary>
