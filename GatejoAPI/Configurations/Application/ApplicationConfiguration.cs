@@ -7,13 +7,13 @@ public static class ApplicationConfiguration {
     public static WebApplication Configure(this WebApplication app) {
         app.UseCors(ConfigurationConstants.MY_CORS);
 
-        //app.UseMiddleware<LoggingMiddleware>();
-
-        app.UseMiddleware<ExceptionMiddleware>();
+        //app.UseMiddleware<SecurityHeadersMiddleware>();
 
         app.UseMiddleware<DbConnectionMiddleware>();
+        
+        app.UseMiddleware<ExceptionMiddleware>();
 
-        app.UseMiddleware<SecurityHeadersMiddleware>();
+        app.UseMiddleware<LoggingMiddleware>();
 
         app.UseSwagger();
         app.UseSwaggerUI(c => {
@@ -23,7 +23,7 @@ public static class ApplicationConfiguration {
         });
 
         app.UseHttpsRedirection();
-        //app.UseHsts();
+        app.UseHsts();
 
         app.UseResponseCompression();
         app.UseRateLimiter();
