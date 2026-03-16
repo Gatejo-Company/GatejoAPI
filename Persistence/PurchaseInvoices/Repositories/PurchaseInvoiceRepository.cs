@@ -57,7 +57,7 @@ public class PurchaseInvoiceRepository : IPurchaseInvoiceRepository {
 	}
 
 	public async Task<PagedData<PurchaseInvoice>> GetAllAsync(PurchaseInvoicesFilter filter) {
-		await _connection.Connect();
+		
 		var (where, applyParams) = BuildWhere(filter);
 		return await PaginationHelper.FetchPagedAsync<PurchaseInvoice>(
 			_connection,
@@ -70,7 +70,7 @@ public class PurchaseInvoiceRepository : IPurchaseInvoiceRepository {
 	}
 
 	public async Task<PurchaseInvoice?> GetByIdAsync(int id) {
-		await _connection.Connect();
+		
 
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = @"
@@ -96,7 +96,7 @@ public class PurchaseInvoiceRepository : IPurchaseInvoiceRepository {
 	}
 
 	public async Task<int> CreateAsync(int supplierId, DateOnly date, decimal total, string? notes) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = @"
             INSERT INTO purchase_invoices (supplier_id, date, total, notes)
@@ -122,7 +122,7 @@ public class PurchaseInvoiceRepository : IPurchaseInvoiceRepository {
 	}
 
 	public async Task<bool> UpdatePaymentAsync(int id, decimal paid) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "UPDATE purchase_invoices SET paid = @paid WHERE id = @id";
 		cmd.AddParameter("paid", paid);
@@ -131,7 +131,7 @@ public class PurchaseInvoiceRepository : IPurchaseInvoiceRepository {
 	}
 
 	public async Task<bool> DeleteAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "DELETE FROM purchase_invoices WHERE id = @id";
 		cmd.AddParameter("id", id);

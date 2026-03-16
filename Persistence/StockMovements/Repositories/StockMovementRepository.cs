@@ -61,7 +61,7 @@ public class StockMovementRepository : IStockMovementRepository {
     }
 
     public async Task<PagedData<StockMovement>> GetAllAsync(StockMovementsFilter filter) {
-        await _connection.Connect();
+        
         var (where, applyParams) = BuildWhere(filter);
         return await PaginationHelper.FetchPagedAsync<StockMovement>(
             _connection,
@@ -77,7 +77,7 @@ public class StockMovementRepository : IStockMovementRepository {
     }
 
     public async Task<StockMovement?> GetByIdAsync(int id) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = SelectSql + " WHERE sm.id = @id";
         cmd.AddParameter("id", id);
@@ -85,7 +85,7 @@ public class StockMovementRepository : IStockMovementRepository {
     }
 
     public async Task<StockMovement> CreateManualAdjustmentAsync(int productId, int typeId, int quantity, string? notes) {
-        await _connection.Connect();
+        
 
         var cmd = _connection.CreateCommand();
         cmd.CommandText = @"
@@ -109,7 +109,7 @@ public class StockMovementRepository : IStockMovementRepository {
     }
 
     public async Task<List<StockMovement>> GetByProductAsync(int productId) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = SelectSql + " WHERE sm.product_id = @pid ORDER BY sm.created_at DESC";
         cmd.AddParameter("pid", productId);

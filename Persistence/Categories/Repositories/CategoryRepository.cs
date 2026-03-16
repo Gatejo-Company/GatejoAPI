@@ -22,7 +22,7 @@ public class CategoryRepository : ICategoryRepository {
 	}
 
 	public async Task<PagedData<Category>> GetAllAsync(PagedFilter filter) {
-		await _connection.Connect();
+		
 		return await PaginationHelper.FetchPagedAsync<Category>(
 			_connection,
 			"SELECT id, name, description, COUNT(*) OVER() AS total_count FROM categories ORDER BY id",
@@ -30,7 +30,7 @@ public class CategoryRepository : ICategoryRepository {
 	}
 
 	public async Task<Category?> GetByIdAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "SELECT id, name, description FROM categories WHERE id = @id";
 		cmd.AddParameter("id", id);
@@ -38,7 +38,7 @@ public class CategoryRepository : ICategoryRepository {
 	}
 
 	public async Task<Category> CreateAsync(string name, string? description) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = @"
             INSERT INTO categories (name, description)
@@ -50,7 +50,7 @@ public class CategoryRepository : ICategoryRepository {
 	}
 
 	public async Task<Category?> UpdateAsync(int id, string name, string? description) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = @"
             UPDATE categories SET name = @name, description = @description
@@ -63,7 +63,7 @@ public class CategoryRepository : ICategoryRepository {
 	}
 
 	public async Task<bool> DeleteAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "DELETE FROM categories WHERE id = @id";
 		cmd.AddParameter("id", id);

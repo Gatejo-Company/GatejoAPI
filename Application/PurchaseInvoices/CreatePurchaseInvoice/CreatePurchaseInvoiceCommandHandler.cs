@@ -26,7 +26,7 @@ public class CreatePurchaseInvoiceCommandHandler : IRequestHandler<CreatePurchas
 
     public async Task<PurchaseInvoiceDto> Handle(CreatePurchaseInvoiceCommand request, CancellationToken cancellationToken) {
         var total = request.Items.Sum(i => i.Quantity * i.UnitPrice);
-        await _connection.Connect();
+        
 
         await _tx.BeginAsync();
         try {

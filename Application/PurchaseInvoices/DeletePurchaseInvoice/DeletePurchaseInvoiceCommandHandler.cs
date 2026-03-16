@@ -27,7 +27,7 @@ public class DeletePurchaseInvoiceCommandHandler : IRequestHandler<DeletePurchas
         var invoice = await _repository.GetByIdAsync(request.Id);
         if (invoice == null) return false;
 
-        await _connection.Connect();
+        
         await _tx.BeginAsync();
         try {
             foreach (var item in invoice.Items) {

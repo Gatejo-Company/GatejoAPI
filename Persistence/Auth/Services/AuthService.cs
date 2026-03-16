@@ -20,7 +20,7 @@ public class AuthService : IAuthService {
 	}
 
 	public async Task<AuthData?> LoginAsync(string email, string password) {
-		await _Connection.Connect();
+		
 
 		var cmd = _Connection.CreateCommand();
 		cmd.CommandText = @"
@@ -44,7 +44,7 @@ public class AuthService : IAuthService {
 	}
 
 	public async Task<AuthData?> RegisterAsync(string email, string password, string name) {
-		await _Connection.Connect();
+		
 
 		var checkCmd = _Connection.CreateCommand();
 		checkCmd.CommandText = "SELECT id FROM users WHERE email = @email";
@@ -73,7 +73,7 @@ public class AuthService : IAuthService {
 	}
 
 	public async Task<AuthData?> RefreshTokenAsync(string token, string refreshToken) {
-		await _Connection.Connect();
+		
 
 		var cmd = _Connection.CreateCommand();
 		cmd.CommandText = @"
@@ -105,7 +105,7 @@ public class AuthService : IAuthService {
 	}
 
 	public async Task<bool> LogoutAsync(string token, string refreshToken) {
-		await _Connection.Connect();
+		
 
 		var cmd = _Connection.CreateCommand();
 		cmd.CommandText = "UPDATE refresh_tokens SET revoked = TRUE WHERE token = @token";

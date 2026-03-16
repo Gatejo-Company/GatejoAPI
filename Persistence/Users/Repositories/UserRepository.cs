@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository {
         INNER JOIN roles r ON r.id = u.role_id";
 
 	public async Task<PagedData<User>> GetAllAsync(PagedFilter filter) {
-		await _connection.Connect();
+		
 		return await PaginationHelper.FetchPagedAsync<User>(
 			_connection,
 			@"SELECT u.id, u.name, u.email, u.role_id, r.name AS role_name, u.active, u.created_at,
@@ -43,7 +43,7 @@ public class UserRepository : IUserRepository {
 	}
 
 	public async Task<User?> GetByIdAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = SelectSql + " WHERE u.id = @id";
 		cmd.AddParameter("id", id);
@@ -51,7 +51,7 @@ public class UserRepository : IUserRepository {
 	}
 
 	public async Task<User?> UpdateAsync(int id, string name, string email, int roleId) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = @"
             WITH upd AS (
@@ -71,7 +71,7 @@ public class UserRepository : IUserRepository {
 	}
 
 	public async Task<bool> SetActiveAsync(int id, bool active) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "UPDATE users SET active = @active WHERE id = @id";
 		cmd.AddParameter("id", id);
@@ -80,7 +80,7 @@ public class UserRepository : IUserRepository {
 	}
 
 	public async Task<bool> DeleteAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "DELETE FROM users WHERE id = @id";
 		cmd.AddParameter("id", id);

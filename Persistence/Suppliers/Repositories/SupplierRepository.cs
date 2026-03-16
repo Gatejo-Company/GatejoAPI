@@ -24,7 +24,7 @@ public class SupplierRepository : ISupplierRepository {
 	}
 
 	public async Task<PagedData<Supplier>> GetAllAsync(PagedFilter filter) {
-		await _connection.Connect();
+		
 		return await PaginationHelper.FetchPagedAsync<Supplier>(
 			_connection,
 			"SELECT id, name, phone, email, notes, COUNT(*) OVER() AS total_count FROM suppliers ORDER BY id",
@@ -32,7 +32,7 @@ public class SupplierRepository : ISupplierRepository {
 	}
 
 	public async Task<Supplier?> GetByIdAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "SELECT id, name, phone, email, notes FROM suppliers WHERE id = @id";
 		cmd.AddParameter("id", id);
@@ -40,7 +40,7 @@ public class SupplierRepository : ISupplierRepository {
 	}
 
 	public async Task<Supplier> CreateAsync(string name, string? phone, string? email, string? notes) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = @"
             INSERT INTO suppliers (name, phone, email, notes)
@@ -54,7 +54,7 @@ public class SupplierRepository : ISupplierRepository {
 	}
 
 	public async Task<Supplier?> UpdateAsync(int id, string name, string? phone, string? email, string? notes) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = @"
             UPDATE suppliers SET name = @name, phone = @phone, email = @email, notes = @notes
@@ -69,7 +69,7 @@ public class SupplierRepository : ISupplierRepository {
 	}
 
 	public async Task<bool> DeleteAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "DELETE FROM suppliers WHERE id = @id";
 		cmd.AddParameter("id", id);

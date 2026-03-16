@@ -63,7 +63,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<PagedData<Product>> GetAllAsync(ProductsFilter filter) {
-        await _connection.Connect();
+        
         var (where, applyParams) = BuildWhere(filter);
         var sql = @"
         SELECT p.id, p.name, p.description, p.category_id, c.name AS category_name,
@@ -81,7 +81,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<Product?> GetByIdAsync(int id) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = SelectSql + " WHERE p.id = @id";
         cmd.AddParameter("id", id);
@@ -89,7 +89,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<Product> CreateAsync(string name, string? description, int categoryId, int brandId, decimal price, int minStock) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = @"
             WITH ins AS (
@@ -118,7 +118,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<Product?> UpdateAsync(int id, string name, string? description, int categoryId, int brandId, int minStock) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = @"
             WITH upd AS (
@@ -144,7 +144,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<Product?> UpdatePriceAsync(int id, decimal price, string? reason) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = @"
             WITH upd AS (
@@ -170,7 +170,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<bool> SetActiveAsync(int id, bool active) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = "UPDATE products SET active = @active WHERE id = @id";
         cmd.AddParameter("id", id);
@@ -179,7 +179,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<bool> DeleteAsync(int id) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = "DELETE FROM products WHERE id = @id";
         cmd.AddParameter("id", id);
@@ -187,7 +187,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<PagedData<PriceHistory>> GetPriceHistoryAsync(PriceHistoryFilter filter) {
-        await _connection.Connect();
+        
         return await PaginationHelper.FetchPagedAsync<PriceHistory>(
             _connection,
             @"SELECT id, product_id, price, reason, created_at, COUNT(*) OVER() AS total_count
@@ -206,7 +206,7 @@ public class ProductRepository : IProductRepository {
     }
 
     public async Task<int> GetCurrentStockAsync(int productId) {
-        await _connection.Connect();
+        
         var cmd = _connection.CreateCommand();
         cmd.CommandText = "SELECT COALESCE(SUM(quantity), 0) AS stock FROM stock_movements WHERE product_id = @pid";
         cmd.AddParameter("pid", productId);

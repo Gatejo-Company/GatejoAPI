@@ -22,7 +22,7 @@ public class RoleRepository : IRoleRepository {
 	}
 
 	public async Task<PagedData<Role>> GetAllAsync(PagedFilter filter) {
-		await _connection.Connect();
+		
 		return await PaginationHelper.FetchPagedAsync<Role>(
 			_connection,
 			"SELECT id, name, description, COUNT(*) OVER() AS total_count FROM roles ORDER BY id",
@@ -30,7 +30,7 @@ public class RoleRepository : IRoleRepository {
 	}
 
 	public async Task<Role?> GetByIdAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "SELECT id, name, description FROM roles WHERE id = @id";
 		cmd.AddParameter("id", id);

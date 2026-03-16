@@ -21,7 +21,7 @@ public class BrandRepository : IBrandRepository {
 	}
 
 	public async Task<PagedData<Brand>> GetAllAsync(PagedFilter filter) {
-		await _connection.Connect();
+		
 		return await PaginationHelper.FetchPagedAsync<Brand>(
 			_connection,
 			"SELECT id, name, COUNT(*) OVER() AS total_count FROM brands ORDER BY id",
@@ -29,7 +29,7 @@ public class BrandRepository : IBrandRepository {
 	}
 
 	public async Task<Brand?> GetByIdAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "SELECT id, name FROM brands WHERE id = @id";
 		cmd.AddParameter("id", id);
@@ -37,7 +37,7 @@ public class BrandRepository : IBrandRepository {
 	}
 
 	public async Task<Brand> CreateAsync(string name) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "INSERT INTO brands (name) VALUES (@name) RETURNING id, name";
 		cmd.AddParameter("name", name);
@@ -45,7 +45,7 @@ public class BrandRepository : IBrandRepository {
 	}
 
 	public async Task<Brand?> UpdateAsync(int id, string name) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "UPDATE brands SET name = @name WHERE id = @id RETURNING id, name";
 		cmd.AddParameter("id", id);
@@ -54,7 +54,7 @@ public class BrandRepository : IBrandRepository {
 	}
 
 	public async Task<bool> DeleteAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "DELETE FROM brands WHERE id = @id";
 		cmd.AddParameter("id", id);

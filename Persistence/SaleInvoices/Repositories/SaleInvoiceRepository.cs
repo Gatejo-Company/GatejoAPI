@@ -165,7 +165,7 @@ public class SaleInvoiceRepository : ISaleInvoiceRepository {
 	}
 
 	public async Task<bool> ReverseAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "UPDATE sale_invoices SET reversed = TRUE WHERE id = @id AND reversed = FALSE";
 		cmd.AddParameter("id", id);

@@ -11,10 +11,12 @@ public class DbConnectionMiddleware {
 
 	public async Task InvokeAsync(HttpContext context, ICConnection connection) {
 		await connection.Connect();
-		try {
+
+        try {
 			await _Next(context);
 		} finally {
 			await connection.Disconnect();
-		}
+
+        }
 	}
 }

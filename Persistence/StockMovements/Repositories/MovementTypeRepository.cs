@@ -21,7 +21,7 @@ public class MovementTypeRepository : IMovementTypeRepository {
 	}
 
 	public async Task<PagedData<MovementType>> GetAllAsync(PagedFilter filter) {
-		await _connection.Connect();
+		
 		return await PaginationHelper.FetchPagedAsync<MovementType>(
 			_connection,
 			"SELECT id, name, COUNT(*) OVER() AS total_count FROM movement_types ORDER BY id",
@@ -29,7 +29,7 @@ public class MovementTypeRepository : IMovementTypeRepository {
 	}
 
 	public async Task<MovementType?> GetByIdAsync(int id) {
-		await _connection.Connect();
+		
 		var cmd = _connection.CreateCommand();
 		cmd.CommandText = "SELECT id, name FROM movement_types WHERE id = @id";
 		cmd.AddParameter("id", id);
