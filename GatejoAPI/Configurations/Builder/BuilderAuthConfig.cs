@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -15,9 +14,7 @@ public static class BuilderAuthConfig {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(opt => {
-            if (!Debugger.IsAttached) {
-                opt.RequireHttpsMetadata = true;
-            }
+            opt.RequireHttpsMetadata = false;
 
             opt.SaveToken = true;
             opt.TokenValidationParameters = new TokenValidationParameters {
