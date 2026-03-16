@@ -7,7 +7,7 @@ public static class ApplicationConfiguration {
     public static WebApplication Configure(this WebApplication app) {
         app.UseCors(ConfigurationConstants.MY_CORS);
 
-        //app.UseMiddleware<LoggingMiddleware>();
+        app.UseMiddleware<LoggingMiddleware>();
 
         app.UseMiddleware<ExceptionMiddleware>();
 
