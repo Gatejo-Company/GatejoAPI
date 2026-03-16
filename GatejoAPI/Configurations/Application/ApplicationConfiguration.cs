@@ -5,13 +5,19 @@ namespace API.API_Clean_Architecture.Configurations.Application;
 
 public static class ApplicationConfiguration {
     public static WebApplication Configure(this WebApplication app) {
+        app.UseHsts();
+        app.UseHttpsRedirection();
+
         app.UseCors(ConfigurationConstants.MY_CORS);
+
+        app.UseResponseCompression();
+        app.UseRateLimiter();
 
         //app.UseMiddleware<SecurityHeadersMiddleware>();
 
-        app.UseMiddleware<DbConnectionMiddleware>();
-        
         app.UseMiddleware<ExceptionMiddleware>();
+
+        app.UseMiddleware<DbConnectionMiddleware>();
 
         //app.UseMiddleware<LoggingMiddleware>();
 
@@ -21,12 +27,6 @@ public static class ApplicationConfiguration {
             c.RoutePrefix = "api/docs";
             c.DocExpansion(DocExpansion.None);
         });
-
-        app.UseHttpsRedirection();
-        app.UseHsts();
-
-        app.UseResponseCompression();
-        app.UseRateLimiter();
 
         app.UseAuthentication();
         app.UseAuthorization();

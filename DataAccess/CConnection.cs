@@ -9,26 +9,18 @@ namespace API.DataAccess;
 
 [Injectable(ServiceLifetime.Scoped)]
 public class CConnection : ICConnection {
-    private volatile object _Lock = new();
-
     public CConnection(IConfiguration configuration) {
-        if (ConnectionDB == null) {
-            lock (_Lock) {
-                if (ConnectionDB == null) {
-                    var connectionString = configuration.GetConnectionString("value");
-                    if (connectionString == null || connectionString.Length <= 0) {
-                        throw new NullReferenceException();
-                    }
-
-                    var builder = new NpgsqlConnectionStringBuilder(connectionString) {
-                        Timeout = 30,
-                        TrustServerCertificate = true,
-                    };
-
-                    ConnectionDB = new NpgsqlConnection(builder.ConnectionString);
-                }
-            }
+        var connectionString = configuration.GetConnectionString("value");
+        if (string.IsNullOrEmpty(connectionString)) {
+            throw new NullReferenceException();
         }
+
+        var builder = new NpgsqlConnectionStringBuilder(connectionString) {
+            Timeout = 30,
+            TrustServerCertificate = true,
+        };
+
+        ConnectionDB = new NpgsqlConnection(builder.ConnectionString);
     }
 
     internal NpgsqlConnection? ConnectionDB { get; set; }
