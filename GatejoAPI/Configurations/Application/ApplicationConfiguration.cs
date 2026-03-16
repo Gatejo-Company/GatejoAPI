@@ -13,7 +13,7 @@ public static class ApplicationConfiguration {
         
         app.UseMiddleware<ExceptionMiddleware>();
 
-        app.UseMiddleware<LoggingMiddleware>();
+        //app.UseMiddleware<LoggingMiddleware>();
 
         app.UseSwagger();
         app.UseSwaggerUI(c => {
