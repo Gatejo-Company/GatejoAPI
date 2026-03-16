@@ -20,7 +20,12 @@ public class CConnection : ICConnection {
                         throw new NullReferenceException();
                     }
 
-                    ConnectionDB = new NpgsqlConnection(connectionString);
+                    var builder = new NpgsqlConnectionStringBuilder(connectionString) {
+                        Timeout = 30,
+                        TrustServerCertificate = true,
+                    };
+
+                    ConnectionDB = new NpgsqlConnection(builder.ConnectionString);
                 }
             }
         }
@@ -35,7 +40,8 @@ public class CConnection : ICConnection {
         }
 
         if (ConnectionDB.State == ConnectionState.Closed) {
-            await ConnectionDB.OpenAsync();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+            await ConnectionDB.OpenAsync(cts.Token);
         }
     }
 
