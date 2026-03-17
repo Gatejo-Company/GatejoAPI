@@ -1,7 +1,6 @@
 using API.DataAccess.Interfaces;
 using API.Domain.StockMovements;
 using API.Persistence.PurchaseInvoices.Interfaces;
-using API.Persistence.Shared;
 using API.Persistence.StockMovements.Interfaces;
 using MediatR;
 
@@ -10,25 +9,23 @@ namespace API.Application.PurchaseInvoices.CreatePurchaseInvoice;
 public class CreatePurchaseInvoiceCommandHandler : IRequestHandler<CreatePurchaseInvoiceCommand, PurchaseInvoiceDto> {
     private readonly IPurchaseInvoiceRepository _repository;
     private readonly IStockMovementRepository _stockRepository;
-    private readonly ITransactionManager _tx;
+
     private readonly ICConnection _connection;
 
     public CreatePurchaseInvoiceCommandHandler(
         IPurchaseInvoiceRepository repository,
         IStockMovementRepository stockRepository,
-        ITransactionManager tx,
         ICConnection connection) {
         _repository = repository;
         _stockRepository = stockRepository;
-        _tx = tx;
         _connection = connection;
     }
 
     public async Task<PurchaseInvoiceDto> Handle(CreatePurchaseInvoiceCommand request, CancellationToken cancellationToken) {
         var total = request.Items.Sum(i => i.Quantity * i.UnitPrice);
-        
 
-        await _tx.BeginAsync();
+
+        await _connection.BeginTransaction();
         try {
             var invoiceId = await _repository.CreateAsync(request.SupplierId, request.Date, total, request.Notes);
 
@@ -39,13 +36,13 @@ public class CreatePurchaseInvoiceCommandHandler : IRequestHandler<CreatePurchas
                     item.ProductId,
                     item.Quantity,
                     invoiceId,
-                    $"Purchase invoice #{invoiceId}");
+                    $"Compra #{invoiceId}");
             }
 
-            await _tx.CommitAsync();
+            await _connection.CommitTransaction();
             return PurchaseInvoiceDto.From((await _repository.GetByIdAsync(invoiceId))!);
         } catch {
-            await _tx.RollbackAsync();
+            await _connection.CancelTransaction();
             throw;
         }
     }
