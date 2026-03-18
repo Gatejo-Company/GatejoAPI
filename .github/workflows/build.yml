@@ -1,0 +1,26 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Compile .NET 10.0 Solution
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6.0.2
+
+      - name: Setup .NET 10.0
+        uses: actions/setup-dotnet@v5.2.0
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore GatejoAPI.sln
+
+      - name: Build solution
+        run: dotnet build GatejoAPI.sln --no-restore --configuration Release
