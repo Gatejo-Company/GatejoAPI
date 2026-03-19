@@ -4,7 +4,7 @@ using API.Application.SaleInvoices.DeleteSaleInvoice;
 using API.Application.SaleInvoices.GetPendingCredit;
 using API.Application.SaleInvoices.GetSaleInvoiceById;
 using API.Application.SaleInvoices.GetSaleInvoices;
-using API.Application.SaleInvoices.GetSalesSummary12Months;
+using API.Application.SaleInvoices.GetSalesSummaryLastMonths;
 using API.Application.SaleInvoices.MarkSaleAsPaid;
 using API.Application.SaleInvoices.ReverseSaleInvoice;
 using API.Application.Shared;
@@ -24,9 +24,9 @@ public class SaleInvoicesController : ControllerBase {
         _mediator = mediator;
     }
 
-    [HttpGet("summary/last-12-months")]
-    public async Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLast12Months() {
-        return await _mediator.Send(new GetSalesSummary12MonthsQuery());
+    [HttpGet("summary/last-months")]
+    public async Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLastMonths([FromQuery] int months = 12) {
+        return await _mediator.Send(new GetSalesSummaryLastMonthsQuery(months));
     }
 
     [HttpGet]

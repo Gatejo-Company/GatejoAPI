@@ -1,4 +1,4 @@
-using API.Application.SaleInvoices.GetSalesSummary12Months;
+using API.Application.SaleInvoices.GetSalesSummaryLastMonths;
 using API.DataAccess.Interfaces;
 using API.Domain.SaleInvoices;
 using API.Persistence.SaleInvoices.Interfaces;
@@ -190,12 +190,13 @@ public class SaleInvoiceRepository : ISaleInvoiceRepository {
             null, MapInvoice, filter.Page, filter.PageSize);
     }
 
-    public async Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLast12MonthsAsync() {
+    public async Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLastMonthsAsync(int months) {
         var cmd = _connection.CreateCommand();
+        cmd.AddParameter("months", months - 1);
         cmd.CommandText = @"
             WITH months AS (
                 SELECT generate_series(
-                    date_trunc('month', NOW() - INTERVAL '11 months'),
+                    date_trunc('month', NOW() - (@months || ' months')::interval),
                     date_trunc('month', NOW()),
                     INTERVAL '1 month'
                 )::date AS month_start

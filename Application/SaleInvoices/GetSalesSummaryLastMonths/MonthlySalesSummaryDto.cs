@@ -1,4 +1,4 @@
-namespace API.Application.SaleInvoices.GetSalesSummary12Months;
+namespace API.Application.SaleInvoices.GetSalesSummaryLastMonths;
 
 public record MonthlySalesSummaryDto(
     int Year,

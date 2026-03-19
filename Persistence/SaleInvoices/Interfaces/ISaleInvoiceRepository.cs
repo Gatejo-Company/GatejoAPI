@@ -1,4 +1,4 @@
-using API.Application.SaleInvoices.GetSalesSummary12Months;
+using API.Application.SaleInvoices.GetSalesSummaryLastMonths;
 using API.Domain.SaleInvoices;
 using API.Persistence.Shared;
 
@@ -13,5 +13,5 @@ public interface ISaleInvoiceRepository {
 	Task<bool> ReverseAsync(int id);
 	Task<bool> DeleteAsync(int id);
 	Task<PagedData<SaleInvoice>> GetPendingCreditAsync(PagedFilter filter);
-	Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLast12MonthsAsync();
+	Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLastMonthsAsync(int months);
 }
