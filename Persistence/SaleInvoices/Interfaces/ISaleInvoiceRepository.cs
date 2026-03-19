@@ -1,4 +1,3 @@
-using API.Application.SaleInvoices.GetSalesSummaryLastMonths;
 using API.Domain.SaleInvoices;
 using API.Persistence.Shared;
 

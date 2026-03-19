@@ -6,6 +6,7 @@ using API.Application.SaleInvoices.GetSaleInvoiceById;
 using API.Application.SaleInvoices.GetSaleInvoices;
 using API.Application.SaleInvoices.GetSalesSummaryLastMonths;
 using API.Application.SaleInvoices.MarkSaleAsPaid;
+using API.Domain.SaleInvoices;
 using API.Application.SaleInvoices.ReverseSaleInvoice;
 using API.Application.Shared;
 using MediatR;

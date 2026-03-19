@@ -1,4 +1,3 @@
-using API.Application.SaleInvoices.GetSalesSummaryLastMonths;
 using API.DataAccess.Interfaces;
 using API.Domain.SaleInvoices;
 using API.Persistence.SaleInvoices.Interfaces;
