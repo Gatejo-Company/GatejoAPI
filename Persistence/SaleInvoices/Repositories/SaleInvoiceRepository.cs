@@ -208,7 +208,6 @@ public class SaleInvoiceRepository : ISaleInvoiceRepository {
             FROM months m
             LEFT JOIN sale_invoices si
                 ON date_trunc('month', si.date::timestamp) = m.month_start::timestamp
-                AND si.reversed = FALSE
             GROUP BY m.month_start
             ORDER BY m.month_start";
 
