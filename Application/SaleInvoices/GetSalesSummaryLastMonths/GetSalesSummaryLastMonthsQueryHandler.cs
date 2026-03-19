@@ -1,4 +1,3 @@
-using API.Domain.SaleInvoices;
 using API.Persistence.SaleInvoices.Interfaces;
 using MediatR;
 
@@ -12,6 +11,7 @@ public class GetSalesSummaryLastMonthsQueryHandler : IRequestHandler<GetSalesSum
     }
 
     public async Task<List<MonthlySalesSummaryDto>> Handle(GetSalesSummaryLastMonthsQuery request, CancellationToken cancellationToken) {
-        return await _repository.GetSalesSummaryLastMonthsAsync(request.Months);
+        var data = await _repository.GetSalesSummaryLastMonthsAsync(request.Months);
+        return data.Select(MonthlySalesSummaryDto.From).ToList();
     }
 }

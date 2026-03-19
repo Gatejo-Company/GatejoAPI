@@ -1,4 +1,3 @@
-using API.Domain.SaleInvoices;
 using MediatR;
 
 namespace API.Application.SaleInvoices.GetSalesSummaryLastMonths;

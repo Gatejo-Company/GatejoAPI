@@ -12,5 +12,5 @@ public interface ISaleInvoiceRepository {
 	Task<bool> ReverseAsync(int id);
 	Task<bool> DeleteAsync(int id);
 	Task<PagedData<SaleInvoice>> GetPendingCreditAsync(PagedFilter filter);
-	Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLastMonthsAsync(int months);
+	Task<List<MonthlySalesSummary>> GetSalesSummaryLastMonthsAsync(int months);
 }

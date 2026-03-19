@@ -189,7 +189,7 @@ public class SaleInvoiceRepository : ISaleInvoiceRepository {
             null, MapInvoice, filter.Page, filter.PageSize);
     }
 
-    public async Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLastMonthsAsync(int months) {
+    public async Task<List<MonthlySalesSummary>> GetSalesSummaryLastMonthsAsync(int months) {
         var cmd = _connection.CreateCommand();
         cmd.AddParameter("months", months - 1);
         cmd.CommandText = @"
@@ -212,10 +212,10 @@ public class SaleInvoiceRepository : ISaleInvoiceRepository {
             GROUP BY m.month_start
             ORDER BY m.month_start";
 
-        var result = new List<MonthlySalesSummaryDto>();
+        var result = new List<MonthlySalesSummary>();
 
         await cmd.ExecuteCommandQuery(rs => {
-            result.Add(new MonthlySalesSummaryDto(
+            result.Add(new MonthlySalesSummary(
                 rs.GetValue<int>("year"),
                 rs.GetValue<int>("month"),
                 rs.GetValue<int>("invoice_count"),
