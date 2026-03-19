@@ -1,3 +1,4 @@
+using API.Application.SaleInvoices.GetSalesSummary12Months;
 using API.DataAccess.Interfaces;
 using API.Domain.SaleInvoices;
 using API.Persistence.SaleInvoices.Interfaces;
@@ -187,5 +188,41 @@ public class SaleInvoiceRepository : ISaleInvoiceRepository {
 			  WHERE on_credit = TRUE AND paid_at IS NULL
 			  ORDER BY date ASC",
             null, MapInvoice, filter.Page, filter.PageSize);
+    }
+
+    public async Task<List<MonthlySalesSummaryDto>> GetSalesSummaryLast12MonthsAsync() {
+        var cmd = _connection.CreateCommand();
+        cmd.CommandText = @"
+            WITH months AS (
+                SELECT generate_series(
+                    date_trunc('month', NOW() - INTERVAL '11 months'),
+                    date_trunc('month', NOW()),
+                    INTERVAL '1 month'
+                )::date AS month_start
+            )
+            SELECT
+                EXTRACT(YEAR FROM m.month_start)::int AS year,
+                EXTRACT(MONTH FROM m.month_start)::int AS month,
+                COUNT(si.id)::int AS invoice_count,
+                COALESCE(SUM(si.total), 0)::numeric AS total_amount
+            FROM months m
+            LEFT JOIN sale_invoices si
+                ON date_trunc('month', si.date::timestamp) = m.month_start::timestamp
+                AND si.reversed = FALSE
+            GROUP BY m.month_start
+            ORDER BY m.month_start";
+
+        var result = new List<MonthlySalesSummaryDto>();
+
+        await cmd.ExecuteCommandQuery(rs => {
+            result.Add(new MonthlySalesSummaryDto(
+                rs.GetValue<int>("year"),
+                rs.GetValue<int>("month"),
+                rs.GetValue<int>("invoice_count"),
+                rs.GetValue<decimal>("total_amount")
+            ));
+        });
+
+        return result;
     }
 }
