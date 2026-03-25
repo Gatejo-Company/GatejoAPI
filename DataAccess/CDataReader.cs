@@ -59,9 +59,19 @@ public class CDataReader : ICDataReader {
 
 		var valueType = typeof(T);
 
+		// DateOnly no implementa IConvertible, se convierte desde DateTime
+		if (valueType == typeof(DateOnly)) {
+			var dt = Convert.ToDateTime(value);
+			return (T)(object)DateOnly.FromDateTime(dt);
+		}
+
 		// Si es nullable
 		if (IsNullableType(valueType)) {
 			var underlying = Nullable.GetUnderlyingType(valueType)!;
+			if (underlying == typeof(DateOnly)) {
+				var dt = Convert.ToDateTime(value);
+				return (T)(object)DateOnly.FromDateTime(dt);
+			}
 			return (T)Convert.ChangeType(value, underlying);
 		}
 

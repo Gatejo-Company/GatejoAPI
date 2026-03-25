@@ -40,7 +40,10 @@ public class CreatePurchaseInvoiceCommandHandler : IRequestHandler<CreatePurchas
             }
 
             await _connection.CommitTransaction();
-            return PurchaseInvoiceDto.From((await _repository.GetByIdAsync(invoiceId))!);
+
+            var purchase = await _repository.GetByIdAsync(invoiceId);
+
+            return PurchaseInvoiceDto.From(purchase!);
         } catch {
             await _connection.CancelTransaction();
             throw;
