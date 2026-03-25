@@ -21,26 +21,21 @@ public class CreateSaleInvoiceCommandHandler : IRequestHandler<CreateSaleInvoice
     }
 
     public async Task<SaleInvoiceDto> Handle(CreateSaleInvoiceCommand request, CancellationToken cancellationToken) {
-        var total = request.Items.Sum(i => i.Quantity * i.UnitPrice);
+        var total = request.Items.Sum(i => i.Amount);
 
         await _connection.BeginTransaction();
         try {
             var invoiceId = await _repository.CreateAsync(request.Date, request.OnCredit, false, total, request.Notes);
 
             foreach (var item in request.Items) {
-                var subtotal = (item.Quantity * item.UnitPrice);
-
-                int quantity = item.Quantity;
-                decimal unitPrice = item.UnitPrice;
-
-                await _repository.AddItemAsync(invoiceId, item.ProductId, quantity, unitPrice, subtotal);
+                await _repository.AddItemAsync(invoiceId, item.ProductId, item.Quantity, item.UnitPrice, item.Amount);
 
                 string note = $"Factura #{invoiceId}";
 
                 await _stockRepository.CreateForInvoiceAsync(
                     MovementTypeNames.Sale,
                     item.ProductId,
-                    item.Quantity,
+                    item.Quantity * -1,
                     invoiceId,
                     note);
 

@@ -2,7 +2,9 @@ using MediatR;
 
 namespace API.Application.SaleInvoices.CreateSaleInvoice;
 
-public record SaleItemDto(int ProductId, int Quantity, decimal UnitPrice);
+public record SaleItemDto(int ProductId, int Quantity, decimal UnitPrice) {
+    public decimal Amount => Quantity * UnitPrice;
+};
 
 public record CreateSaleInvoiceCommand(
     DateOnly Date,
